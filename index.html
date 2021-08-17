@@ -30,6 +30,8 @@
         });
     });
 
+    socket.on('message', addMessage);
+
     function addMessage({ name, message }) {
         $("#messages").append(`<h4>${name}</h4><p>${message}</p>`);
     }
@@ -42,6 +44,5 @@
 
     function postMessage(message) {
         $.post('http://localhost:3000/message', message);
-        addMessage(message);
     }
 </script>
