@@ -9,15 +9,37 @@
 <div class="container">
     <div class="my-5 jumbotron">
         <h1 class="mb-3 display-4">Send Message</h1>
-        <input class="mb-3 form-control" placeholder="Name" />
-        <textarea class="mb-3 form-control" placeholder="Message"></textarea>
-        <button class="btn btn-success">Send</button>
+        <input id="name" class="mb-3 form-control" placeholder="Name" />
+        <textarea id="message" class="mb-3 form-control" placeholder="Message"></textarea>
+        <button id="send" class="btn btn-success">Send</button>
     </div>
     <div id="messages"></div>
 </div>
 
 <script>
     $(() => {
-        console.log('loaded');
+        getMessages();
+        $("#send").click(() => {
+            const message = {
+                name: $("#name").val(),
+                message: $("#message").val()
+            };
+            postMessage(message);
+        });
     });
+
+    function addMessage({ name, message }) {
+        $("#messages").append(`<h4>${name}</h4><p>${message}</p>`);
+    }
+
+    function getMessages() {
+        $.get('http://localhost:3000/messages', messages => {
+            messages.forEach(addMessage);
+        });
+    }
+
+    function postMessage(message) {
+        $.post('http://localhost:3000/message', message);
+        addMessage(message);
+    }
 </script>
